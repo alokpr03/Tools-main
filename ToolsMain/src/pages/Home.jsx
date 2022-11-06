@@ -3,10 +3,10 @@ import CustomSelect from "../components/CustomSelect/CustomSelect";
 import JSONPretty from "react-json-pretty";
 const options = [
   { value: "", label: "Select Tool" },
-  { value: "JSON to XML", label: "json_to_xml" },
-  { value: "JSON Parser", label: "json_parser" },
-  { value: "YAML", label: "yaml" },
-  { value: "PDF to Image", label: "pdft_to_image" },
+  { value: "JSON to XML", label: "JSON to XML" },
+  { value: "JSON Parser", label: "JSON Parser" },
+  { value: "YAML", label: "YAML" },
+  { value: "PDF to Image", label: "PDF to Image" },
 ];
 function Home() {
   const [buttonClick, setButtonClick] =useState(false);
@@ -25,7 +25,7 @@ function Home() {
           value={tool}
           name="speciality"
         />
-        {tool.value !== "" && (
+        {tool.value == "JSON Parser" && (
           <div className="">
             <h3 className="text-[#002E94] my-2 text-lg">{tool.value}</h3>
             {buttonClick?<JSONPretty json={text}/>: <textarea
