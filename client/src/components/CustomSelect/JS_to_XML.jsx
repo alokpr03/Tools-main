@@ -16,15 +16,26 @@ const DownloadLine = () =>{
 
 const JS_to_XML = () => {
 
-const [data, setData] = useState([]);
+const [data, setData] = useState("");
 const [buttonClick, setButtonClick] = useState(false)
 const [prettier, setPrettier] = useState(false)
-
+const [error, setError] = useState("")
+const [errorLoader, setErrorLoader] = useState(false);
 
 // const tempData = [{ foo: 'foo'}, { bar: 'bar' }]
 
 const fileName = 'data'
 const exportType =  exportFromJSON.types.xml
+
+const convertXML = () => {
+   const temp = [];
+   temp.push(data);
+   exportFromJSON({data, fileName, exportType });
+};
+
+
+
+// console.log("DataType: ", typeof data)
 
     return ( 
         <>
@@ -35,21 +46,28 @@ const exportType =  exportFromJSON.types.xml
               className="min-h-[200px] w-full p-2 outline-none"
               placeholder="Enter JSON"
               onChange={(e) => {
-                const temp = []
-                temp.push(JSON.parse(e.target.value))
-                setData(temp)
+                try{
+                setData(JSON.parse(e.target.value))
+                setErrorLoader(false);
+                setError("");
+                }
+                catch(err){
+                  setErrorLoader(true);
+                  setError("Unexpected Token, Type valid JSON");
+                }
               }}
             />}
+            {errorLoader ? <h3>{error}</h3> : null}
             {
-              data.length != 0 ? (
+              data ? (
               <div>
                 {
-                  prettier ? <JSONPretty json={data[0]}/>:<button className="bg-blue-700 text-white font-semibold p-2 m-2 rounded-md" onClick={()=> setPrettier(prettier ? false : true)}>Prettier</button>
+                  prettier ? <JSONPretty json={data}/>:<button className="bg-blue-700 text-white font-semibold p-2 m-2 rounded-md" onClick={()=> setPrettier(prettier ? false : true)}>Prettier</button>
                 }
               
               <button onClick={()=>{ 
                   setButtonClick(buttonClick ? false : true);
-                  exportFromJSON({data, fileName, exportType });
+                  convertXML();
               }} 
               className="bg-blue-700 text-white font-semibold p-2 my-2 rounded-md">
                 Download XML
